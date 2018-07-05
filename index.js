@@ -6,14 +6,14 @@ import { createStore } from "redux";
 const printBoard = () => {
   const { board } = game.getState();
   if (board !== undefined) {
-  for (let r = 0; r != 3; ++r) {
-    for (let c = 0; c != 3; ++c) {
-      process.stdout.write(board.getIn([r, c], "_"));
+    for (let r = 0; r != 3; ++r) {
+      for (let c = 0; c != 3; ++c) {
+        process.stdout.write(board.getIn([r, c], "_"));
+      }
+      process.stdout.write("\n");
     }
-    process.stdout.write("\n");
-  } }
+  }
 };
-
 
 const getInput = player => async () => {
   const { turn } = game.getState();
@@ -30,8 +30,8 @@ const getInput = player => async () => {
 };
 
 const checkWinner = () => {
-  if (game.getState().winner !== null){
-    if (game.getState().winner === 'draw') {
+  if (game.getState().winner !== null) {
+    if (game.getState().winner === "draw") {
       console.log("\nIt's a tie!\n");
       process.exit(0);
     }
@@ -45,7 +45,7 @@ const checkError = () => {
   if (game.getState().error !== undefined) {
     console.log(game.getState().error);
   }
-}
+};
 
 // Create the store
 const game = createStore(gameReducer);

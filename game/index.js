@@ -12,25 +12,26 @@ export function move(turn, [row, col]) {
 
 function bad(state, action) {
 	if (action.position !== undefined) {
-	if (action.position.isArray === false) {
-		return "Invalid input!";
-	}
-	if (
-		action.position[0] >= 3 ||
-		action.position[0] < 0 ||
-		action.position[1] >= 3 ||
-		action.position[1] < 0
-	) {
-		return "Invalid input!";
-	}
-	if (state.board.get(action.position[0]) !== undefined) {
-		if (
-			state.board.get(action.position[0]).get(action.position[1]) !== undefined
-		) {
-			return "Cannot override an existing X/O!";
+		if (action.position.isArray === false) {
+			return "Invalid input!";
 		}
-	} }
-	else {
+		if (
+			action.position[0] >= 3 ||
+			action.position[0] < 0 ||
+			action.position[1] >= 3 ||
+			action.position[1] < 0
+		) {
+			return "Invalid input!";
+		}
+		if (state.board.get(action.position[0]) !== undefined) {
+			if (
+				state.board.get(action.position[0]).get(action.position[1]) !==
+				undefined
+			) {
+				return "Cannot override an existing X/O!";
+			}
+		}
+	} else {
 		return null;
 	}
 }
@@ -51,12 +52,19 @@ function boardReducer(board = Map(), action) {
 
 const winner = board => {
 	let gotWinner = null;
+	function boardCheck() {
+		if (
+			board.get(0) !== undefined &&
+			board.get(1) !== undefined &&
+			board.get(2) !== undefined
+		) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	//Tie Checker
-	if (
-		board.get(0) !== undefined &&
-		board.get(1) !== undefined &&
-		board.get(2) !== undefined
-	) {
+	if (boardCheck()) {
 		gotWinner = "draw";
 		for (let i = 0; i <= 2; i++) {
 			for (let n = 0; n <= 2; n++) {
@@ -81,11 +89,7 @@ const winner = board => {
 
 	//Column Win
 	for (let i = 0; i <= 2; i++) {
-		if (
-			board.get(0) !== undefined &&
-			board.get(1) !== undefined &&
-			board.get(2) !== undefined
-		) {
+		if (boardCheck()) {
 			if (
 				board.get(0).get(i) === board.get(1).get(i) &&
 				board.get(1).get(i) === board.get(2).get(i)
@@ -96,11 +100,7 @@ const winner = board => {
 	}
 
 	//Diagonal Win
-	if (
-		board.get(0) !== undefined &&
-		board.get(1) !== undefined &&
-		board.get(2) !== undefined
-	) {
+	if (boardCheck()) {
 		if (
 			board.get(0).get(0) === board.get(1).get(1) &&
 			board.get(1).get(1) === board.get(2).get(2)
@@ -119,7 +119,7 @@ const winner = board => {
 
 export default function reducer(state = {}, action) {
 	const error = bad(state, action);
-	if (error) return Object.assign({}, state, {error});
+	if (error) return Object.assign({}, state, { error });
 
 	const newBoard = boardReducer(state.board, action);
 	const winnerState = winner(newBoard);
