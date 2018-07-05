@@ -13,7 +13,6 @@ export function move(turn, [row, col]) {
 function bad(state, action) {
 	if (action.position !== undefined) {
 	if (action.position.isArray === false) {
-		console.log("Invalid input: Not an array!");
 		return "Invalid input!";
 	}
 	if (
@@ -22,19 +21,16 @@ function bad(state, action) {
 		action.position[1] >= 3 ||
 		action.position[1] < 0
 	) {
-		console.log("Invalid input: Not a valid number!")
 		return "Invalid input!";
 	}
 	if (state.board.get(action.position[0]) !== undefined) {
 		if (
 			state.board.get(action.position[0]).get(action.position[1]) !== undefined
 		) {
-			console.log("Invalid input: overriding a filled space!");
 			return "Cannot override an existing X/O!";
 		}
 	} }
 	else {
-		console.log("No errors found!");
 		return null;
 	}
 }

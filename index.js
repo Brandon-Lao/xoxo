@@ -39,6 +39,12 @@ const checkWinner = () => {
     console.log("The winner is: " + game.getState().winner + "\n");
     process.exit(0);
   }
+};
+
+const checkError = () => {
+  if (game.getState().error !== undefined) {
+    console.log(game.getState().error);
+  }
 }
 
 // Create the store
@@ -50,6 +56,7 @@ game.subscribe(printBoard);
 game.subscribe(getInput("X"));
 game.subscribe(getInput("O"));
 game.subscribe(checkWinner);
+game.subscribe(checkError);
 
 // We dispatch a dummy START action to call all our
 // subscribers the first time.
